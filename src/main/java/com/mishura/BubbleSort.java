@@ -22,7 +22,7 @@ public class BubbleSort {
         int[] numbers = createArray(10, 0, 100);
         for (int j = 0; j < numbers.length-1; j++) {
             boolean isChanged = false;
-            for (int i = 0; i < numbers.length - 1; i++) {
+            for (int i = 0; i < numbers.length - j - 1; i++) {
                 if (numbers[i] > numbers[i + 1]) {
                     int temp = numbers[i];
                     numbers[i] = numbers[i + 1];
