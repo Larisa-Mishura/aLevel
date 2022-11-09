@@ -1,23 +1,23 @@
 package com.mishura;
 
+import com.mishura.model.Car;
+import com.mishura.service.CarService;
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Лариса Мішура");
+        final CarService carService = new CarService();
 
-        var y = 5;
-        for(int i = 0; i <=10; i++){
-            System.out.println("Крок " + i + ", значення " + y);
-            y += 2;
-        }
+        final Car testCar = new Car("manufacture", "engine", "color");
+        carService.print(testCar);
 
-        for(int i = 0; i <=10; i++){
-            if(i == 3){
-                continue;
-            }
-            if(i == 6){
-                break;
-            }
-            System.out.println("Крок " + i);
-        }
+        final Car car1 = carService.create();
+        carService.print(car1);
+
+        final Car car2 = carService.create();
+        carService.print(car2);
+
+        final Car car3 = carService.create();
+        carService.print(car3);
     }
 }
