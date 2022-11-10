@@ -10,7 +10,7 @@ public class CarService {
     }
 
     public void print(Car car){
-        System.out.printf("{Manufacture: %s   Engine: %s   Color: %s   Count %d   Price: %d}%n",
+        System.out.printf("{Manufacture: %s\tEngine: %s\tColor: %s\tCount %d\tPrice: %d}%n",
                 car.getManufacturer(),
                 car.getEngine(),
                 car.getColor(),
