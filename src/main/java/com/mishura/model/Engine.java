@@ -1,13 +1,15 @@
 package com.mishura.model;
 
+import java.util.Random;
+
 public class Engine {
     private int power;
     private String type;
 
-    public Engine(int power, String type) {
-        if( (power >= 0) && (power <=1000)) {
-            this.power = power;
-        }
+    Random random = new Random();
+
+    public Engine(String type) {
+        this.power = random.nextInt(1000);
         this.type = type;
     }
 
@@ -18,14 +20,12 @@ public class Engine {
         return power;
     }
 
-    public void setPower(int power) {
-        if( (power >= 0) && (power <=1000)) {
-            this.power = power;
-        }
-    }
-
     public String getType() {
         return type;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
     }
 
     public void setType(String type) {
