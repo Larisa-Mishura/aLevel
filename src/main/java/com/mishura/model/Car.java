@@ -1,23 +1,38 @@
 package com.mishura.model;
 
-import java.util.Random;
+import java.util.UUID;
 
 public class Car {
+    private final String id;
     private String manufacturer;
-    private String engine;
-    private String color;
+    private Engine engine;
+    private Color color;
     private int count;
     private int price;
 
-    public Car(){
+    public Car() {
+        this.id = UUID.randomUUID().toString();
+        this.count = 1;
     }
 
-    public Car(String manufacturer, String engine, String color) {
+    public Car(Color color) {
+        this.id = UUID.randomUUID().toString();
+        this.color = color;
+        this.count = 1;
+        this.price = (int) (Math.random() * 100000000);
+    }
+
+    public Car(String manufacturer, Engine engine, Color color) {
+        this.id = UUID.randomUUID().toString();
         this.manufacturer = manufacturer;
         this.engine = engine;
         this.color = color;
         this.count = 1;
-        this.price = (int)(Math.random()*100000000);
+        this.price = (int) (Math.random() * 100000000);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getManufacturer() {
@@ -28,19 +43,19 @@ public class Car {
         this.manufacturer = manufacture;
     }
 
-    public String getEngine() {
+    public Engine getEngine() {
         return engine;
     }
 
-    public void setEngine(final String engine) {
+    public void setEngine(final Engine engine) {
         this.engine = engine;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(final String color) {
+    public void setColor(final Color color) {
         this.color = color;
     }
 
@@ -58,5 +73,10 @@ public class Car {
 
     public void setPrice(final int price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s", id, color);
     }
 }
