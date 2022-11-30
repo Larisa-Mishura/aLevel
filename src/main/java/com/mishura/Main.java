@@ -4,6 +4,7 @@ import com.mishura.model.Car;
 import com.mishura.model.Color;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.service.CarService;
+import com.mishura.util.RandomGenerator;
 
 import java.util.Arrays;
 
@@ -38,5 +39,7 @@ public class Main {
         carService.insert(1, car3);
         all = carService.getAll();
         System.out.println(Arrays.toString(all));
+
+        //RandomGenerator
     }
 }

@@ -1,7 +1,14 @@
 package com.mishura.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.UUID;
 
+@Setter
+@Getter
+@ToString
 public class Car {
     private final String id;
     private String manufacturer;
@@ -29,50 +36,6 @@ public class Car {
         this.color = color;
         this.count = 1;
         this.price = (int) (Math.random() * 100000000);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(final String manufacture) {
-        this.manufacturer = manufacture;
-    }
-
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(final Engine engine) {
-        this.engine = engine;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(final Color color) {
-        this.color = color;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(final int count) {
-        this.count = count;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(final int price) {
-        this.price = price;
     }
 
     @Override
