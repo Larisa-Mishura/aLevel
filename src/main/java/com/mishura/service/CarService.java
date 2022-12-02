@@ -4,12 +4,14 @@ import com.mishura.model.Car;
 import com.mishura.model.Color;
 import com.mishura.model.Engine;
 import com.mishura.repository.CarArrayRepository;
+import com.mishura.util.RandomGenerator;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class CarService {
     private final CarArrayRepository carArrayRepository;
+    private final RandomGenerator randomGenerator = new RandomGenerator();
 
     private Random random = new Random();
 
@@ -32,6 +34,18 @@ public class CarService {
         }
     }
 
+    public int create(RandomGenerator randomGenerator){
+        int count = randomGenerator.generateRandomInt();
+        if((count < 1) || (count > 10)) {
+            count = -1;
+        }
+        for (int i = 0; i < count; i++) {
+            Car car = create();
+            print(car);
+        }
+        return count;
+    }
+
     private Color getRandomColor(){
         final Color[] colors = Color.values();
         final int randomIndex = random.nextInt(colors.length);
@@ -51,7 +65,7 @@ public class CarService {
     }
 
     public void print(Car car) {
-        System.out.printf("{ Manufacture: %-12s\tEngine: %-12s\tColor: %-8s\tCount %-4d\tPrice: %-9d}",
+        System.out.printf("{ Manufacture: %-12s\tEngine: %-12s\tColor: %-8s\tCount %-4d\tPrice: %-9d}\n",
                 car.getManufacturer(),
                 car.getEngine(),
                 car.getColor(),
@@ -61,10 +75,10 @@ public class CarService {
 
     public void check(Car car) {
         print(car);
-        if (car.getCount() < 1) {
+        if ((car == null) || (car.getCount() < 1)) {
             System.out.println("  -  машини нема в наявності.");
             return;
-        } else if (car.getEngine().getPower() < 200) {
+        } else if ((car.getEngine() == null) || (car.getEngine().getPower() < 200)) {
             System.out.println("  -  потужність двигуна менше 200.");
             return;
         }
