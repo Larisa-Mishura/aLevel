@@ -2,6 +2,8 @@ package com.mishura.service;
 
 import com.mishura.model.Car;
 import com.mishura.model.Engine;
+import com.mishura.model.PassengerCar;
+import com.mishura.model.Truck;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +27,7 @@ class CarServiceTest {
 
     @Test
     void createTest() {
-        final Car car = target.create();
+        final Car car = target.createPassengerCar();
         Assertions.assertNotNull(car);
         Assertions.assertNotEquals(0, car.getPrice());
     }
@@ -37,30 +39,29 @@ class CarServiceTest {
 
     @Test
     void printTest(){
-        final Car car = new Car();
+        final Car car = new PassengerCar();
         Assertions.assertDoesNotThrow(()-> target.print(car));
     }
 
     @Test
     void checkCountZeroTest(){
-        final Car car = Mockito.mock(Car.class);
-        Mockito.when(car.getCount()).thenReturn(0);
+        final Car car = new Truck();
+        car.setCount(0);
         Assertions.assertDoesNotThrow(()-> target.check(car));
     }
 
     @Test
     void checkCountOneTest(){
-        final Car car = Mockito.mock(Car.class);
-        Mockito.when(car.getCount()).thenReturn(1);
-        Mockito.when(car.getEngine()).thenReturn(new Engine());
+        final Car car = new Truck();
+        car.setCount(1);
+        car.setEngine(new Engine());
         Assertions.assertDoesNotThrow(()-> target.check(car));
     }
 
     @Test
     void checkEngineNullTest(){
-        final Car car = Mockito.mock(Car.class);
-        Mockito.when(car.getCount()).thenReturn(1);
-        Mockito.when(car.getEngine()).thenReturn(null);
+        final Car car = new Truck();
+        car.setCount(1);
         Assertions.assertDoesNotThrow(()-> target.check(car));
     }
 
@@ -88,7 +89,7 @@ class CarServiceTest {
 
     @Test
     void find(){
-        final Car expected = new Car();
+        final Car expected = new PassengerCar();
         String id = "123";
         Mockito.when(repository.getByIG("123")).thenReturn(expected);
         final Car actual = target.find(id);
@@ -116,14 +117,14 @@ class CarServiceTest {
 
     @Test
     void insertIndex0(){
-        final Car car = new Car();
+        final Car car = new Truck();
         target.insert(0, car);
         Mockito.verify(repository).insert(0, car);
     }
 
     @Test
     void insertIndex100(){
-        final Car car = new Car();
+        final Car car = new Truck();
         target.insert(100, car);
         Mockito.verify(repository).insert(100, car);
     }

@@ -8,14 +8,14 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@ToString
-public class Car {
+public abstract class Car implements CountRestore{
     private final String id;
     private String manufacturer;
     private Engine engine;
     private Color color;
     private int count;
     private int price;
+    private Type type;
 
     public Car() {
         this.id = UUID.randomUUID().toString();
