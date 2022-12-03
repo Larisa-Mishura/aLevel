@@ -1,5 +1,10 @@
 package com.mishura.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Truck extends Car{
     private int loadCapacity;
     private Type type = Type.TRUCK;

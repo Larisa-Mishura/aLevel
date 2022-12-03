@@ -22,6 +22,7 @@ public class CarService {
         final Color color = getRandomColor();
         final Engine engine = new Engine(randomString(4));
         final PassengerCar car = new PassengerCar(manufacturer, engine, color);
+        car.setPassengerCount(random.nextInt(20));
         carArrayRepository.save(car);
         return car;
     }
@@ -31,6 +32,7 @@ public class CarService {
         final Color color = getRandomColor();
         final Engine engine = new Engine(randomString(4));
         final Truck car = new Truck(manufacturer, engine, color);
+        car.setLoadCapacity(random.nextInt(20));
         carArrayRepository.save(car);
         return car;
     }
