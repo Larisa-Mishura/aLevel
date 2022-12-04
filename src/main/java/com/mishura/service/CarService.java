@@ -1,8 +1,6 @@
 package com.mishura.service;
 
-import com.mishura.model.Car;
-import com.mishura.model.Color;
-import com.mishura.model.Engine;
+import com.mishura.model.*;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
@@ -19,18 +17,29 @@ public class CarService {
         this.carArrayRepository = carArrayRepository;
     }
 
-    public Car create() {
+    public PassengerCar createPassengerCar() {
         final String manufacturer = randomString(9);
         final Color color = getRandomColor();
         final Engine engine = new Engine(randomString(4));
-        final Car car = new Car(manufacturer, engine, color);
+        final PassengerCar car = new PassengerCar(manufacturer, engine, color);
+        car.setPassengerCount(random.nextInt(20));
+        carArrayRepository.save(car);
+        return car;
+    }
+
+    public Truck createTruck() {
+        final String manufacturer = randomString(9);
+        final Color color = getRandomColor();
+        final Engine engine = new Engine(randomString(4));
+        final Truck car = new Truck(manufacturer, engine, color);
+        car.setLoadCapacity(random.nextInt(20));
         carArrayRepository.save(car);
         return car;
     }
 
     public void create(final int count){
         for (int i = 0; i < count; i++) {
-            create();
+            createPassengerCar();
         }
     }
 
@@ -40,7 +49,7 @@ public class CarService {
             count = -1;
         }
         for (int i = 0; i < count; i++) {
-            Car car = create();
+            Car car = createPassengerCar();
             print(car);
         }
         return count;
