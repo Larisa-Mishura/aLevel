@@ -4,18 +4,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Setter
 @Getter
 public abstract class Car implements CountRestore{
-    private final String id;
-    private String manufacturer;
-    private Engine engine;
-    private Color color;
-    private int count;
-    private int price;
-    private Type type;
+    protected final String id;
+    protected String manufacturer;
+    protected Engine engine;
+    protected Color color;
+    protected int count;
+    protected int price;
+    protected Type type;
 
     public Car() {
         this.id = UUID.randomUUID().toString();
@@ -41,5 +42,18 @@ public abstract class Car implements CountRestore{
     @Override
     public String toString() {
         return String.format("[%s] %s", id, color);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car)) return false;
+        Car car = (Car) o;
+        return Objects.equals(getId(), car.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

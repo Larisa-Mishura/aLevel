@@ -1,9 +1,6 @@
 package com.mishura.service;
 
-import com.mishura.model.Car;
-import com.mishura.model.Engine;
-import com.mishura.model.PassengerCar;
-import com.mishura.model.Truck;
+import com.mishura.model.*;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -26,8 +23,15 @@ class CarServiceTest {
     }
 
     @Test
-    void createTest() {
-        final Car car = target.createPassengerCar();
+    void createCarTest() {
+        final Car car = target.create(Type.CAR);
+        Assertions.assertNotNull(car);
+        Assertions.assertNotEquals(0, car.getPrice());
+    }
+
+    @Test
+    void createTruckTest() {
+        final Car car = target.create(Type.TRUCK);
         Assertions.assertNotNull(car);
         Assertions.assertNotEquals(0, car.getPrice());
     }

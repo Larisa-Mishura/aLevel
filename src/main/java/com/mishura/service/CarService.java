@@ -5,6 +5,7 @@ import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class CarService {
@@ -17,29 +18,41 @@ public class CarService {
         this.carArrayRepository = carArrayRepository;
     }
 
-    public PassengerCar createPassengerCar() {
+    public boolean carEquals(Car car1, Car car2){
+        if(car1 == car2){
+            return true;
+        }
+        if(car1.getType() != car2.getType()){
+            return false;
+        }
+        if(car1.hashCode() != car2.hashCode()){
+            return false;
+        }
+        return car1.getId().equals(car2.getId());
+    }
+
+    public Car create(Type type) {
         final String manufacturer = randomString(9);
         final Color color = getRandomColor();
         final Engine engine = new Engine(randomString(4));
-        final PassengerCar car = new PassengerCar(manufacturer, engine, color);
-        car.setPassengerCount(random.nextInt(20));
-        carArrayRepository.save(car);
-        return car;
+        if(type == Type.CAR) {
+            PassengerCar car = new PassengerCar(manufacturer, engine, color);
+            car.setPassengerCount(random.nextInt(20));
+            carArrayRepository.save(car);
+            return car;
+        }
+        if (type == Type.TRUCK) {
+            Truck car = new Truck(manufacturer, engine, color);
+            car.setLoadCapacity(random.nextInt(20));
+            carArrayRepository.save(car);
+            return car;
+        }
+        throw new IllegalArgumentException();
     }
 
-    public Truck createTruck() {
-        final String manufacturer = randomString(9);
-        final Color color = getRandomColor();
-        final Engine engine = new Engine(randomString(4));
-        final Truck car = new Truck(manufacturer, engine, color);
-        car.setLoadCapacity(random.nextInt(20));
-        carArrayRepository.save(car);
-        return car;
-    }
-
-    public void create(final int count){
+    public void create(final int count, Type type){
         for (int i = 0; i < count; i++) {
-            createPassengerCar();
+            create(type);
         }
     }
 
@@ -49,8 +62,13 @@ public class CarService {
             count = -1;
         }
         for (int i = 0; i < count; i++) {
-            Car car = createPassengerCar();
-            print(car);
+            if (random.nextBoolean()) {
+                Car car = create(Type.CAR);
+                print(car);
+            } else {
+                Car car = create(Type.TRUCK);
+                print(car);
+            }
         }
         return count;
     }
@@ -88,7 +106,7 @@ public class CarService {
             System.out.println("  -  машини нема в наявності.");
             return;
         } else if ((car.getEngine() == null) || (car.getEngine().getPower() < 200)) {
-            System.out.println("  -  потужність двигуна менше 200.");
+            System.out.println("  -  невірна потужність двигуна.");
             return;
         }
         System.out.println("  -  машина повністю готова до продажу.");
