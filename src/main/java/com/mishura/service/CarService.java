@@ -168,46 +168,32 @@ public class CarService {
     }
 
     public void printManufacturerAndCount(final Car car) {
-        //якщо значення присутнє, то на консоль виводиться повідомлення про виробника і кількість (ifPresent & isPresent)
         Optional.ofNullable(car).ifPresent(value -> {
             System.out.printf("Manufacturer: %s, count: %d.\n", value.getManufacturer(), value.getCount());
         });
     }
 
     public void printColor(final Car car) {
-        //якщо значення немає - створюється нова машина випадкового типу. Виводиться на консоль колір машини (orElse)
         Car passengerCar = Optional.ofNullable(car).orElse(new PassengerCar(getRandomColor()));
         System.out.println("Color: " + passengerCar.getColor().toString());
     }
 
     public void checkCount(Car car) {
-        //фільтрується значення за кількістю, воно повинно бути більше 10,
-        //якщо значення немає - викидається виняток. Створити своє неперевірюване виключення
-        //UserInputException. На консоль виводиться повідомлення про виробника та кількість.
-        //(filter & orElseThrow)
         Car value = Optional.ofNullable(car)
                 .filter(carFilter -> carFilter.getCount() > 10)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new UserInputException());
         System.out.printf("Manufacturer: %s, count: %d.\n", value.getManufacturer(), value.getCount());
     }
 
     public void printEngineInfo(Car car) {
-        //якщо значення немає - створюється нова машини випадкового типу і повідомляється про це в консоль.
-        // З машини дістається інформація про двигун. На консоль виводиться потужність двигуна.
-        // (orElseGet & map)
         Car value = Optional.ofNullable(car).orElseGet(() -> {
             System.out.print("Створено нову машину - ");
             return createRandomTypeCar();
         });
-        Optional.of(value.getEngine()).map(c -> {
-            return System.out.printf("Engine power: %d.\n", c.getPower());
-        });
+        Optional.of(value.getEngine()).map(c -> System.out.printf("Engine power: %d.\n", c.getPower()));
     }
 
     public void printInfo(Car car) {
-        //якщо значення є - виводиться на консоль повна інформація про машину
-        //через метод print, якщо значення немає - створюється випадкова машина після чого
-        //виводитися інформація методом print (ifPresentOrElse)
         Optional.ofNullable(car).ifPresentOrElse(
                 value -> print(car),
                 () -> print(createRandomTypeCar())
