@@ -28,4 +28,6 @@ public class PassengerCar extends Car{
         this.setCount(100);
         System.out.println("Кількість машин змінено на " + this.getCount());
     }
+
+
 }
