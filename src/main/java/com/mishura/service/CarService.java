@@ -5,7 +5,7 @@ import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 public class CarService {
@@ -73,7 +73,15 @@ public class CarService {
         return count;
     }
 
-    private Color getRandomColor(){
+    public Car createRandomTypeCar() {
+        if (random.nextBoolean()) {
+            return create(Type.CAR);
+        } else {
+            return create(Type.TRUCK);
+        }
+    }
+
+    private Color getRandomColor() {
         final Color[] colors = Color.values();
         final int randomIndex = random.nextInt(colors.length);
         return colors[randomIndex];
@@ -150,12 +158,45 @@ public class CarService {
         findAndChangeRandomColor(car);
     }
 
-    private void findAndChangeRandomColor(final Car car){
+    private void findAndChangeRandomColor(final Car car) {
         final Color color = car.getColor();
         Color randomColor;
         do {
             randomColor = getRandomColor();
         } while (randomColor == color);
         carArrayRepository.updateColor(car.getId(), randomColor);
+    }
+
+    public void printManufacturerAndCount(final Car car) {
+        Optional.ofNullable(car).ifPresent(value -> {
+            System.out.printf("Manufacturer: %s, count: %d.\n", value.getManufacturer(), value.getCount());
+        });
+    }
+
+    public void printColor(final Car car) {
+        Car passengerCar = Optional.ofNullable(car).orElse(new PassengerCar(getRandomColor()));
+        System.out.println("Color: " + passengerCar.getColor().toString());
+    }
+
+    public void checkCount(Car car) {
+        Car value = Optional.ofNullable(car)
+                .filter(carFilter -> carFilter.getCount() > 10)
+                .orElseThrow(() -> new UserInputException());
+        System.out.printf("Manufacturer: %s, count: %d.\n", value.getManufacturer(), value.getCount());
+    }
+
+    public void printEngineInfo(Car car) {
+        Car value = Optional.ofNullable(car).orElseGet(() -> {
+            System.out.print("Створено нову машину - ");
+            return createRandomTypeCar();
+        });
+        Optional.of(value.getEngine()).map(c -> System.out.printf("Engine power: %d.\n", c.getPower()));
+    }
+
+    public void printInfo(Car car) {
+        Optional.ofNullable(car).ifPresentOrElse(
+                value -> print(car),
+                () -> print(createRandomTypeCar())
+        );
     }
 }
