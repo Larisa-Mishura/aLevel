@@ -10,12 +10,22 @@ import java.util.Random;
 
 public class CarService {
     private final CarArrayRepository carArrayRepository;
+
     private final RandomGenerator randomGenerator = new RandomGenerator();
 
     private Random random = new Random();
 
-    public CarService(final CarArrayRepository carArrayRepository) {
+    private static CarService instance;
+
+    private CarService(final CarArrayRepository carArrayRepository) {
         this.carArrayRepository = carArrayRepository;
+    }
+
+    public static CarService getInstance(){
+        if (instance == null){
+            instance = new CarService(CarArrayRepository.getInstance());
+        }
+        return instance;
     }
 
     public boolean carEquals(Car car1, Car car2){
@@ -78,6 +88,16 @@ public class CarService {
             return create(Type.CAR);
         } else {
             return create(Type.TRUCK);
+        }
+    }
+
+    public void create(int count) {
+        for (int i = 0; i < count; i++) {
+            if (random.nextBoolean()) {
+                create(Type.CAR);
+            } else {
+                create(Type.TRUCK);
+            }
         }
     }
 
