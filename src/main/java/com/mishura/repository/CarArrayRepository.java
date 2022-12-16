@@ -8,7 +8,7 @@ import com.mishura.model.Color;
 //    Read (getById, getAll)
 //    Update
 //    Delete
-public class CarArrayRepository {
+public class CarArrayRepository implements GenericInterface<Car>{
     private static Car[] cars = new Car[10];
 
     private static CarArrayRepository instance;

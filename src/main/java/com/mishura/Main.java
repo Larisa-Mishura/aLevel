@@ -1,26 +1,20 @@
 package com.mishura;
 
-import com.mishura.action.Actions;
+import com.mishura.container.GreenericContainer;
 import com.mishura.model.Car;
-import com.mishura.model.PassengerCar;
 import com.mishura.model.Type;
-import com.mishura.repository.CarArrayRepository;
 import com.mishura.service.CarService;
-import com.mishura.util.AlgorithmUtil;
-import com.mishura.util.UserInput;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.Optional;
 
 public class Main {
     public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args){
         final CarService carService = CarService.getInstance();
-        carService.create(3, Type.CAR);
+        /*carService.create(3, Type.CAR);
         carService.create(3, Type.TRUCK);
         carService.printAll();
         Car[] cars = carService.getAll();
@@ -45,6 +39,23 @@ public class Main {
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].getName();
         }
-        return names;
+        return names;*/
+        Car truck = carService.create(Type.TRUCK);
+        GreenericContainer <? extends Car > containerTruck = new GreenericContainer<>(truck);
+        containerTruck.print();
+        containerTruck.increaseCount();
+        containerTruck.print();
+        containerTruck.increaseCount(Optional.ofNullable(null));
+        containerTruck.print();
+
+        Car passengerCar = carService.create(Type.CAR);
+        GreenericContainer <? extends Car > containerCar = new GreenericContainer<>(passengerCar);
+        containerCar.print();
+        containerCar.increaseCount();
+        containerCar.print();
+        containerCar.increaseCount(Optional.of(50));
+        containerCar.print();
+        containerCar.increaseCount(Optional.of(50.7));
+        containerCar.print();
     }
 }
