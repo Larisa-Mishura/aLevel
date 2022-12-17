@@ -1,7 +1,8 @@
 package com.mishura.container;
 
 import com.mishura.model.Car;
-import com.mishura.util.RandomGenerator;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Optional;
 import java.util.Random;
