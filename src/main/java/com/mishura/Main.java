@@ -1,6 +1,5 @@
 package com.mishura;
 
-import com.mishura.container.GreenericContainer;
 import com.mishura.model.Car;
 import com.mishura.model.Type;
 import com.mishura.service.CarService;

@@ -1,17 +1,15 @@
 package com.mishura.container;
 
 import com.mishura.model.Car;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Optional;
 import java.util.Random;
 
-public class GreenericContainer <T extends Car>{
+public class GenericContainer <T extends Car>{
     T car;
     private Random random = new Random();
 
-    public GreenericContainer(T car){
+    public GenericContainer(T car){
         this.car = car;
     }
 
