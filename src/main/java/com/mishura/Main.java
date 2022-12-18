@@ -1,5 +1,6 @@
 package com.mishura;
 
+import com.mishura.container.GenericContainer;
 import com.mishura.model.Car;
 import com.mishura.model.Type;
 import com.mishura.service.CarService;
@@ -40,7 +41,7 @@ public class Main {
         }
         return names;*/
         Car truck = carService.create(Type.TRUCK);
-        GreenericContainer <? extends Car > containerTruck = new GreenericContainer<>(truck);
+        GenericContainer <? extends Car > containerTruck = new GenericContainer<>(truck);
         containerTruck.print();
         containerTruck.increaseCount();
         containerTruck.print();
@@ -48,7 +49,7 @@ public class Main {
         containerTruck.print();
 
         Car passengerCar = carService.create(Type.CAR);
-        GreenericContainer <? extends Car > containerCar = new GreenericContainer<>(passengerCar);
+        GenericContainer<? extends Car > containerCar = new GenericContainer<>(passengerCar);
         containerCar.print();
         containerCar.increaseCount();
         containerCar.print();
