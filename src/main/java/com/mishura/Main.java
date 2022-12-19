@@ -1,40 +1,50 @@
 package com.mishura;
 
+import com.mishura.action.Actions;
 import com.mishura.model.Car;
+import com.mishura.model.PassengerCar;
 import com.mishura.model.Type;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.service.CarService;
+import com.mishura.util.AlgorithmUtil;
+import com.mishura.util.UserInput;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
+    public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
-        final CarService carService = new CarService(new CarArrayRepository());
-        final Car car1 = carService.create(Type.CAR);
-        car1.restore();
-        final Car car2 = carService.create(Type.TRUCK);
-        car2.restore();
-        //System.out.println(carService.carEquals(car1, car2));
-        Car car3 = null;
+    public static void main(String[] args){
+        final CarService carService = CarService.getInstance();
+        carService.create(3, Type.CAR);
+        carService.create(3, Type.TRUCK);
+        carService.printAll();
+        Car[] cars = carService.getAll();
+        Car car1 = cars[1];
+        Car car2 = cars[2];
 
-        carService.printManufacturerAndCount(car1);
-        carService.printManufacturerAndCount(car2);
-        carService.printManufacturerAndCount(car3);
-
-        carService.printColor(car1);
-        carService.printColor(car2);
-        carService.printColor(car3);
+        System.out.println(AlgorithmUtil.binarySearch(cars, car1));
+        System.out.println(AlgorithmUtil.binarySearch(cars, car2));
 
 
-        carService.printEngineInfo(car1);
-        carService.printEngineInfo(car2);
-        carService.printEngineInfo(car3);
+        final Actions[] values = Actions.values();
+        final String[] names = mapActionToName(values);
 
-        carService.printInfo(car1);
-        carService.printInfo(car2);
-        carService.printInfo(car3);
+        while (true){
+            final int userChoise = UserInput.menu(names);
+            values[userChoise].execute();
+        }
+    }
 
-        carService.checkCount(car1);
-        carService.checkCount(car2);
-        carService.checkCount(car3);
+    private static String[] mapActionToName(final Actions[] values){
+        String[] names = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            names[i] = values[i].getName();
+        }
+        return names;
     }
 }
