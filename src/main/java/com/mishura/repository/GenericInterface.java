@@ -9,11 +9,11 @@ import com.mishura.model.Color;
 //    Update
 //    Delete
 
-public interface GenericInterface <G>{
+public interface GenericInterface <G extends Car>{
 
     void save(final G object);
 
-    void insert(int index, G object) ;
+    void insert(int index, G object);
 
     G[] getAll();
 
