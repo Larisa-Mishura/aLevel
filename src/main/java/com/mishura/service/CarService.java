@@ -1,12 +1,13 @@
 package com.mishura.service;
 
+import com.mishura.container.CarList;
 import com.mishura.model.*;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CarService {
     private final CarArrayRepository carArrayRepository;
@@ -32,20 +33,40 @@ public class CarService {
         if(car1 == car2){
             return true;
         }
-        if(car1.getType() != car2.getType()){
+        if (car1.getType() != car2.getType()) {
             return false;
         }
-        if(car1.hashCode() != car2.hashCode()){
+        if (car1.hashCode() != car2.hashCode()) {
             return false;
         }
         return car1.getId().equals(car2.getId());
+    }
+
+    public Map<String, Integer> toManufacturerMap(List<? extends Car> list) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Car car : list) {
+            String manufacturer = car.getManufacturer();
+            map.computeIfPresent(manufacturer, (key, value) -> value + car.getCount());
+            map.putIfAbsent(manufacturer, car.getCount());
+        }
+        return map;
+    }
+
+    public Map<Integer, ArrayList<Car>> toEnginePowerMap(List<? extends Car> list) {
+        Map<Integer, ArrayList<Car>> map = new HashMap<>();
+        for (Car car : list) {
+            int power = car.getEngine().getPower();
+            map.putIfAbsent(power, new ArrayList<>());
+            map.get(power).add(car);
+        }
+        return map;
     }
 
     public Car create(Type type) {
         final String manufacturer = randomString(9);
         final Color color = getRandomColor();
         final Engine engine = new Engine(randomString(4));
-        if(type == Type.CAR) {
+        if (type == Type.CAR) {
             PassengerCar car = new PassengerCar(manufacturer, engine, color);
             car.setPassengerCount(random.nextInt(20));
             carArrayRepository.save(car);
