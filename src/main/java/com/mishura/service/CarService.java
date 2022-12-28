@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 public class CarService {
     private final CarArrayRepository carArrayRepository;
 
-    private final RandomGenerator randomGenerator = new RandomGenerator();
-
     private Random random = new Random();
 
     private static CarService instance;
