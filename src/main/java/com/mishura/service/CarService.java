@@ -6,6 +6,7 @@ import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,56 @@ public class CarService {
         }
         return car1.getId().equals(car2.getId());
     }
+
+    public <T> List<T> findManafacturerByPrice(Collection<? extends Car> list, int x) {//Знайти машини дорожчі за ціну Х і показати їхнього виробника
+        List<T> listResult = new ArrayList<>();
+                /*list.stream()
+                .map(car -> car.getPrice())
+                .filter(price -> price  > x)
+                .collect(Collectors.toList());*/
+        return listResult;
+    }
+
+    public <T> int countSum(Collection<? extends Car> list) {//Порахувати суму машин через reduce
+        int count = list
+                .stream()
+                .map(car -> car.getCount())
+                .reduce(0, (subtotal, element) -> subtotal + element);
+        return count;
+    }
+
+    public Map<String, Integer> mapToMap(Collection<? extends Car> list) {//Відсортувати машини за виробником, прибрати дублікати, перетворити на Map,
+                                                           // де ключ - це id машини, а значення - це її тип (зберігаючи порядок)
+        List<Car> carList = list.stream()
+                .sorted()
+        Map<String, Integer> map = new HashMap<>();
+
+
+        return map;
+    }
+
+    public <T> Map<Integer, Integer> statistic(Collection<? extends Car> list) {//statistic Отримати статистику за ціною всіх машин
+        Map<Integer, Integer> map = new HashMap<>();
+        return map;
+    }
+
+    public <T> boolean priceCheck(Collection<? extends Car> list, int x) {//Написати реалізацію предиката, який перевіряє, що в переданій колекції в усіх машин є ціна, вища за число Х
+        return false;
+    }
+
+    public <T> Car mapToObject(Map<String, Object> map) {//Написати реалізацію Function, яка приймає Map<String, Object> і створює конкретну машину на підставі полів Map
+        Car car = createRandomTypeCar();
+        return car;
+    }
+
+    public Map<Color, Integer> innerList(List<List<Car>> list, int price) {//
+        Map<Color, Integer> map = new HashMap<>();
+        return map;
+        //innerList метод приймає колекцію List<List<Car>>, дістає машини, сортує за кольорами,
+        //виводить інформацію на консоль, фільтрує за ціною, збирає в Map, де ключ - це колір, а
+        //значення - к-ть машин
+    }
+
 
     public Map<String, Integer> toManufacturerMap(List<? extends Car> list) {
         Map<String, Integer> map = new HashMap<>();
