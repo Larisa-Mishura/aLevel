@@ -36,7 +36,7 @@ public abstract class Car implements CountRestore{
         this.engine = engine;
         this.color = color;
         this.count = 1;
-        this.price = (int) (Math.random() * 100000000);
+        this.price = (int) (Math.random() * 10_000_000);
     }
 
     @Override
