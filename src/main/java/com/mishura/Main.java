@@ -1,9 +1,5 @@
 package com.mishura;
 
-import com.mishura.container.CarComparator;
-import com.mishura.container.CarList;
-import com.mishura.container.CarTree;
-import com.mishura.container.GenericContainer;
 import com.mishura.model.Car;
 import com.mishura.model.Color;
 import com.mishura.model.Engine;
@@ -12,9 +8,7 @@ import com.mishura.service.CarService;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.SQLOutput;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
     public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
