@@ -1,6 +1,8 @@
 package com.mishura;
 
+import com.mishura.container.CarComparator;
 import com.mishura.container.CarList;
+import com.mishura.container.CarTree;
 import com.mishura.container.GenericContainer;
 import com.mishura.model.Car;
 import com.mishura.model.Type;
@@ -8,9 +10,8 @@ import com.mishura.service.CarService;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -61,6 +62,8 @@ public class Main {
         containerCar.increaseCount(Optional.of(50.7));
         containerCar.print();*/
 
+       /* System.out.println("------");
+
         CarList<Car> carList = new CarList<>();
         for(int i = 0; i < 3; i++){
             Car car = carService.createRandomTypeCar();
@@ -99,5 +102,46 @@ public class Main {
         System.out.println(carList.size());
 
         System.out.println("Підрахунок загального count всіх машин всередині колекції: " + carList.totalAmount());
+
+*/
+        CarComparator comparator = new CarComparator();
+        CarTree<Car> tree = new CarTree<>(comparator);
+        Random random = new Random();
+        for(int i = 0; i < 12; i++) {
+            Car carToAdd = carService.createRandomTypeCar();
+            carToAdd.setCount(random.nextInt(10) + 1);
+            System.out.println(carToAdd.toString());
+            tree.add(carToAdd);
+        }
+        System.out.println("Сума count усіх елементів правої гілки - " + tree.leftBranch());
+        System.out.println("Сума count усіх елементів лівої гілки - " + tree.rightBranch());
+
+        System.out.println("~".repeat(25));
+
+        List<Car> list = new ArrayList<>();
+        for(int i = 0; i < 12; i++) {
+            Car carToAdd = carService.createRandomTypeCar();
+            if( i % 2 == 0) {
+                carToAdd.setManufacturer("Xxxxxx");
+            }
+            System.out.println(carToAdd.toString());
+            list.add(carToAdd);
+        }
+        Map<String, Integer> map = carService.toManufacturerMap(list);
+        System.out.println(map.toString());
+
+        System.out.println("~".repeat(25));
+
+        for(int i = 0; i < 12; i++) {
+            if( i % 5 == 0) {
+                list.get(i).getEngine().setPower(1000);;
+            } else if( i % 3 == 0) {
+                list.get(i).getEngine().setPower(1100);;
+            } else {
+                list.get(i).getEngine().setPower(1200);;
+            }
+        }
+        Map<Integer, ArrayList<Car>> mapEnginePower = carService.toEnginePowerMap(list);
+        System.out.println(mapEnginePower.toString());
     }
 }
