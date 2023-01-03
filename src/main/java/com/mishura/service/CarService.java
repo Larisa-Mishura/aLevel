@@ -1,12 +1,11 @@
 package com.mishura.service;
 
-import com.mishura.container.CarList;
 import com.mishura.model.*;
 import com.mishura.repository.CarArrayRepository;
 import com.mishura.util.RandomGenerator;
 
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -41,13 +40,11 @@ public class CarService {
         return car1.getId().equals(car2.getId());
     }
 
-    public <T> List<T> findManafacturerByPrice(Collection<? extends Car> list, int x) {//Знайти машини дорожчі за ціну Х і показати їхнього виробника
-        List<T> listResult = new ArrayList<>();
-                /*list.stream()
-                .map(car -> car.getPrice())
-                .filter(price -> price  > x)
-                .collect(Collectors.toList());*/
-        return listResult;
+    public <T> void findManafacturerByPrice(Collection<? extends Car> list, int x) {//Знайти машини дорожчі за ціну Х і показати їхнього виробника
+        list.stream()
+                .filter(car -> car.getPrice() > x)
+                .map(car -> car.getManufacturer())
+                .forEach(System.out::println);
     }
 
     public <T> int countSum(Collection<? extends Car> list) {//Порахувати суму машин через reduce
@@ -58,36 +55,58 @@ public class CarService {
         return count;
     }
 
-    public Map<String, Integer> mapToMap(Collection<? extends Car> list) {//Відсортувати машини за виробником, прибрати дублікати, перетворити на Map,
-                                                           // де ключ - це id машини, а значення - це її тип (зберігаючи порядок)
-        List<Car> carList = list.stream()
-                .sorted()
-        Map<String, Integer> map = new HashMap<>();
-
-
+    public Map<String, Type> mapToMap(Collection<? extends Car> list) {
+        //Відсортувати машини за виробником, прибрати дублікати, перетворити на Map, де ключ - це id машини, а значення - це її тип (зберігаючи порядок)
+        Map<String, Type> map = list.stream()
+                .sorted(Comparator.comparing(Car::getManufacturer))
+                .distinct()
+                .collect(Collectors.toMap(car -> car.getId(), car -> car.getType(), (v1,v2) -> v1, LinkedHashMap::new));
         return map;
     }
 
-    public <T> Map<Integer, Integer> statistic(Collection<? extends Car> list) {//statistic Отримати статистику за ціною всіх машин
-        Map<Integer, Integer> map = new HashMap<>();
+    public <T> void statistic(Collection<? extends Car> list) {//statistic Отримати статистику за ціною всіх машин
+        IntSummaryStatistics statistics = list.stream()
+                .mapToInt(car -> car.getPrice())
+                .summaryStatistics();
+        System.out.println(statistics);
+    }
+
+    public <T> void priceCheck(Collection<? extends Car> list, int x) {
+        //Написати реалізацію предиката, який перевіряє, що в переданій колекції в усіх машин є ціна, вища за число Х
+        Predicate<Car> pricePredicate = car -> car.getPrice() > x;
+        boolean result = list.stream()
+                .allMatch(pricePredicate);
+        System.out.println(result);
+    }
+
+    //Написати реалізацію Function, яка приймає Map<String, Object> і створює конкретну машину на підставі полів Map
+        public Function<Map<String, Object>, Car> mapToObject = new Function<Map<String, Object>, Car>() {
+            @Override
+            public Car apply(Map<String, Object> map) {
+                String manufacturer = (String) map.get("manufacturer");
+                Color color = (Color) map.get("color");
+                Engine engine = (Engine) map.get("engine");
+                Car car;
+                if(map.get("type") == Type.TRUCK) {
+                    car = new Truck(manufacturer, engine, color);
+                } else {
+                    car = new PassengerCar(manufacturer, engine, color);
+                }
+                car.setPrice((int) map.get("price"));
+                car.setCount((int) map.get("count"));
+                return car;
+            }
+        };
+
+    public Map<Color, Integer> innerList(List<List<Car>> list, int price) {
+        //Дістає машини, сортує за кольорами, виводить інформацію на консоль, фільтрує за ціною, збирає в Map, де ключ - це колір, а значення - к-ть машин
+        Map<Color, Integer> map = list.stream()
+                .flatMap(List::stream)
+                .sorted(Comparator.comparing(Car::getColor))
+                .peek(System.out::println)
+                .filter(car -> car.getPrice() > price)
+                .collect(Collectors.toMap(car -> car.getColor(), car -> (Integer) car.getCount(), (v1, v2) -> v1 + v2));
         return map;
-    }
-
-    public <T> boolean priceCheck(Collection<? extends Car> list, int x) {//Написати реалізацію предиката, який перевіряє, що в переданій колекції в усіх машин є ціна, вища за число Х
-        return false;
-    }
-
-    public <T> Car mapToObject(Map<String, Object> map) {//Написати реалізацію Function, яка приймає Map<String, Object> і створює конкретну машину на підставі полів Map
-        Car car = createRandomTypeCar();
-        return car;
-    }
-
-    public Map<Color, Integer> innerList(List<List<Car>> list, int price) {//
-        Map<Color, Integer> map = new HashMap<>();
-        return map;
-        //innerList метод приймає колекцію List<List<Car>>, дістає машини, сортує за кольорами,
-        //виводить інформацію на консоль, фільтрує за ціною, збирає в Map, де ключ - це колір, а
-        //значення - к-ть машин
     }
 
 
@@ -190,12 +209,13 @@ public class CarService {
     }
 
     public void print(Car car) {
-        System.out.printf("{ Manufacture: %-12s\tEngine: %-12s\tColor: %-8s\tCount %-4d\tPrice: %-9d}\n",
+        System.out.printf("{ Manufacture: %-12s\tEngine: %-12s\tColor: %-8s\tCount %-4d\tPrice: %-9d\tType: %-6s}\n",
                 car.getManufacturer(),
                 car.getEngine(),
                 car.getColor(),
                 car.getCount(),
-                car.getPrice());
+                car.getPrice(),
+                car.getType().toString());
     }
 
     public void check(Car car) {
