@@ -11,16 +11,21 @@ import java.util.regex.Pattern;
 
 public class ObjectReader {
 
-    public String textFromFile(String filename) throws IOException {
+    public InputStream getResourceAsStream(String filename) {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename); //"xml/car.xml");
-        BufferedInputStream reader = new BufferedInputStream(resourceAsStream);
+        final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename);
+        return resourceAsStream;
+    }
+
+
+    public String textFromFile(InputStream inputStream) throws IOException {
+        BufferedInputStream reader = new BufferedInputStream(inputStream);
         String result = "";
         int i;
         while ((i = reader.read()) != -1){
             result = result + (char) i;
         }
-        resourceAsStream.close();
+        inputStream.close();
         return result;
     }
 
@@ -44,9 +49,7 @@ public class ObjectReader {
         return map;
     }
 
-    public Car carFromFile(String filename) throws IOException {
-        String text = textFromFile(filename); //"car.xml");
-        Map<String, String> map = fieldsToMap(text);
+    public PassengerCar carFromMap(Map<String, String> map) throws IOException {
         PassengerCar car = new PassengerCar(map.get("id"));
         car.setManufacturer(map.get("manufacturer"));
         car.setEngine(new Engine(map.get("engine")));
@@ -54,6 +57,13 @@ public class ObjectReader {
         car.setCount(Integer.parseInt(map.get("count")));
         car.setPrice(Integer.parseInt(map.get("price")));
         car.setPassengerCount(Integer.parseInt(map.get("passengerCount")));
+        return car;
+    }
+
+    public Car carFromResourceFile(String filename) throws IOException {
+        String text = textFromFile(getResourceAsStream(filename));
+        Map<String, String> map = fieldsToMap(text);
+        PassengerCar car = carFromMap(map);
         return car;
     }
 }

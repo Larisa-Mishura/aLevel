@@ -229,18 +229,12 @@ public class Main {
         System.out.println(mapFromLists);*/
 
         ObjectReader objectReader = new ObjectReader();
-        /*String s1 = objectReader.textFromFile("D:\\IDEA\\src\\main\\resources\\test.json");
-        Map<String, String> map1 = objectReader.fieldsToMap(s1);
-        System.out.println(map1);
-        String s2 = objectReader.textFromFile("D:\\IDEA\\src\\main\\resources\\Test222.xml");
-        Map<String, String> map2 = objectReader.fieldsToMap(s2);
-        System.out.println(map2);
-        */
-        Car car1 = objectReader.carFromFile("car.xml");
+
+        Car car1 = objectReader.carFromResourceFile("car.xml");
         System.out.print(car1.getId() + " :  ");
         carService.print(car1);
 
-        Car car2 = objectReader.carFromFile("car.json");
+        Car car2 = objectReader.carFromResourceFile("car.json");
         System.out.print(car2.getId() + " :  ");
         carService.print(car2);
     }
