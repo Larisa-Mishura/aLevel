@@ -23,6 +23,10 @@ public abstract class Car implements CountRestore{
         this.count = 1;
     }
 
+    public Car(String id) {
+        this.id = id;
+    }
+
     public Car(Color color) {
         this.id = UUID.randomUUID().toString();
         this.color = color;

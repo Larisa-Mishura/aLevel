@@ -5,15 +5,17 @@ import com.mishura.model.Color;
 import com.mishura.model.Engine;
 import com.mishura.model.Type;
 import com.mishura.service.CarService;
+import com.mishura.service.ObjectReader;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
     public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         final CarService carService = CarService.getInstance();
         /*carService.create(3, Type.CAR);
         carService.create(3, Type.TRUCK);
@@ -141,7 +143,7 @@ public class Main {
         Map<Integer, ArrayList<Car>> mapEnginePower = carService.toEnginePowerMap(list);
         System.out.println(mapEnginePower.toString());*/
 
-        List<Car> list = new ArrayList<>();
+        /*List<Car> list = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
             Car carToAdd = carService.createRandomTypeCar();
             if( i % 5 == 0) {
@@ -224,6 +226,22 @@ public class Main {
         bigList.add(list3);
 
         Map<Color, Integer> mapFromLists = carService.innerList(bigList, 2_000_000);
-        System.out.println(mapFromLists);
+        System.out.println(mapFromLists);*/
+
+        ObjectReader objectReader = new ObjectReader();
+        /*String s1 = objectReader.textFromFile("D:\\IDEA\\src\\main\\resources\\test.json");
+        Map<String, String> map1 = objectReader.fieldsToMap(s1);
+        System.out.println(map1);
+        String s2 = objectReader.textFromFile("D:\\IDEA\\src\\main\\resources\\Test222.xml");
+        Map<String, String> map2 = objectReader.fieldsToMap(s2);
+        System.out.println(map2);
+        */
+        Car car1 = objectReader.carFromFile("car.xml");
+        System.out.print(car1.getId() + " :  ");
+        carService.print(car1);
+
+        Car car2 = objectReader.carFromFile("car.json");
+        System.out.print(car2.getId() + " :  ");
+        carService.print(car2);
     }
 }

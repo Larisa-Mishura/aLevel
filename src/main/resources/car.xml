@@ -1,0 +1,9 @@
+<car>
+    <manufacturer>Abcdefgh<manufacturer/>
+        <engine>7XXJ<engine/>
+            <color>RED<color/>
+                <count>5<count/>
+                    <price>2000000<price/>
+                        <id>2bff0d96-b06a-420a-8095-947cf2c0016c<id/>
+                            <passengerCount>8<passengerCount/>
+                                <car/>

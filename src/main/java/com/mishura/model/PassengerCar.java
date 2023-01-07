@@ -2,7 +2,10 @@ package com.mishura.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.EnumUtils;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -13,6 +16,9 @@ public class PassengerCar extends Car{
 
     public PassengerCar() {
         super();
+    }
+    public PassengerCar(String id) {
+        super(id);
     }
 
     public PassengerCar(Color color){
