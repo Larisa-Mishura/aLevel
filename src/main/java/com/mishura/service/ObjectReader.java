@@ -15,7 +15,8 @@ public class ObjectReader {
 
     private String textFromResourceFile(String filename) throws IOException {
         String result = "";
-        try (final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename)) {
+        try (final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename);
+             BufferedInputStream inputStream = new BufferedInputStream(resourceAsStream);) {
             int i;
             while ((i = resourceAsStream.read()) != -1) {
                 result = result + (char) i;
