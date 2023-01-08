@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
 
 public class ObjectReader {
 
-    public InputStream getResourceAsStream(String filename) {
+    private InputStream getResourceAsStream(String filename) {
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename);
         return resourceAsStream;
     }
 
 
-    public String textFromFile(InputStream inputStream) throws IOException {
+    private String textFromFile(InputStream inputStream) throws IOException {
         BufferedInputStream reader = new BufferedInputStream(inputStream);
         String result = "";
         int i;
@@ -29,7 +29,7 @@ public class ObjectReader {
         return result;
     }
 
-    public Map<String, String> fieldsToMap(String text) throws IOException {
+    private Map<String, String> fieldsToMap(String text) throws IOException {
         Map<String, String> map = new HashMap<>();
         String[] fields = text.split("\n");
         Pattern pattern = Pattern.compile("(\\w|-)+");
@@ -49,7 +49,7 @@ public class ObjectReader {
         return map;
     }
 
-    public PassengerCar carFromMap(Map<String, String> map) throws IOException {
+    private PassengerCar carFromMap(Map<String, String> map) throws IOException {
         PassengerCar car = new PassengerCar(map.get("id"));
         car.setManufacturer(map.get("manufacturer"));
         car.setEngine(new Engine(map.get("engine")));
