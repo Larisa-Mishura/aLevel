@@ -11,28 +11,26 @@ import java.util.regex.Pattern;
 
 public class ObjectReader {
 
-    private InputStream getResourceAsStream(String filename) {
-        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename);
-        return resourceAsStream;
-    }
+    final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-
-    private String textFromFile(InputStream inputStream) throws IOException {
-        BufferedInputStream reader = new BufferedInputStream(inputStream);
+    private String textFromResourceFile(String filename) throws IOException {
         String result = "";
-        int i;
-        while ((i = reader.read()) != -1){
-            result = result + (char) i;
+        try (final InputStream resourceAsStream = contextClassLoader.getResourceAsStream(filename)) {
+            int i;
+            while ((i = resourceAsStream.read()) != -1) {
+                result = result + (char) i;
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("Файл не знайдено");
+            e.printStackTrace();
         }
-        inputStream.close();
         return result;
     }
 
     private Map<String, String> fieldsToMap(String text) throws IOException {
-        Map<String, String> map = new HashMap<>();
-        String[] fields = text.split("\n");
-        Pattern pattern = Pattern.compile("(\\w|-)+");
+        final Map<String, String> map = new HashMap<>();
+        final String[] fields = text.split("\n");
+        final Pattern pattern = Pattern.compile("(\\w|-)+");
         Matcher matcher;
         String key = null;
         String value = null;
@@ -50,7 +48,7 @@ public class ObjectReader {
     }
 
     private PassengerCar carFromMap(Map<String, String> map) throws IOException {
-        PassengerCar car = new PassengerCar(map.get("id"));
+        final PassengerCar car = new PassengerCar(map.get("id"));
         car.setManufacturer(map.get("manufacturer"));
         car.setEngine(new Engine(map.get("engine")));
         car.setColor(EnumUtils.getEnum(Color.class, map.get("color")));
@@ -61,9 +59,9 @@ public class ObjectReader {
     }
 
     public Car carFromResourceFile(String filename) throws IOException {
-        String text = textFromFile(getResourceAsStream(filename));
-        Map<String, String> map = fieldsToMap(text);
-        PassengerCar car = carFromMap(map);
+        final String text = textFromResourceFile(filename);
+        final Map<String, String> map = fieldsToMap(text);
+        final PassengerCar car = carFromMap(map);
         return car;
     }
 }
