@@ -34,6 +34,6 @@ public class Engine {
 
     @Override
     public String toString() {
-        return this.type + " - " + this.power;
+        return this.type + "-" + this.power;
     }
 }
